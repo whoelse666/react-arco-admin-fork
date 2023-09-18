@@ -4,7 +4,7 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   VersionColumn,
-  ObjectID,
+  ObjectId,
   ObjectIdColumn
 } from 'typeorm';
 
@@ -14,7 +14,7 @@ export abstract class Common {
   // _id: string;
 
   @ObjectIdColumn()
-  _id: ObjectID;
+  _id: ObjectId;
 
   // 创建时间
   @CreateDateColumn()

@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CreateCourseDto } from './dtos/create-course.dto';
 import { UpdateCourseDto } from './dtos/update-course.dto';
-import { In, Like, Raw, MongoRepository, ObjectID } from 'typeorm';
+import { In, Like, Raw, MongoRepository, ObjectId } from 'typeorm';
 import { Course } from './entities/course.mongo.entity'
 import { PaginationParams2Dto } from '../shared/dtos/pagination-params.dto'
 @Injectable()

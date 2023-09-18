@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { In, Like, Raw, MongoRepository, ObjectID } from 'typeorm';
+import { In, Like, Raw, MongoRepository, ObjectId } from 'typeorm';
 import { Article } from '../entities/article.mongo.entity'
 import { PaginationParams2Dto } from '../../shared/dtos/pagination-params.dto'
 import { CreateArticleDto, UpdateArticleDto } from '../dtos/article.dto';
