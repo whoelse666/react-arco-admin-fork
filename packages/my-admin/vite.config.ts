@@ -11,19 +11,19 @@ export default defineConfig({
   },
   server: {
     port: 3002,
-    // proxy: {
-    //   // 接口代理
-    //   '/api': {
-    //     target: 'http://localhost:3000/',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, ''),
-    //   },
-    //   // 静态文件
-    //   '/static': {
-    //     target: 'http://localhost:3000/',
-    //     changeOrigin: true,
-    //   },
-    // },
+    proxy: {
+      // 接口代理
+      '/api': {
+        target: 'http://localhost:3000/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      // 静态文件
+      '/static': {
+        target: 'http://localhost:3000/',
+        changeOrigin: true,
+      },
+    },
   },
   plugins: [
     react(),
