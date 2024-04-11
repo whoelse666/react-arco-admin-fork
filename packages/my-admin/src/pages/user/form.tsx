@@ -2,11 +2,13 @@ import React, { useMemo } from 'react';
 import { useState } from 'react';
 import { Drawer, Form, Input, Message } from '@arco-design/web-react';
 import { User } from '.';
+import AvatarUploader from './components/AvatarUploader';
 
 type FormProps = {
   visible: boolean;
   setVisible: (b: boolean) => void;
   editedItem: User;
+  callback: (editedItem?: Partial<User>) => void;
 };
 const name = '用户信息';
 
@@ -107,6 +109,9 @@ function UserForm({ visible, setVisible, editedItem, callback }: FormProps) {
           rules={[{ required: true, message: '用户名是必填项' }]}
         >
           <Input placeholder="请输入用户名" />
+        </Form.Item>
+        <Form.Item label="头像" field="avatar">
+          <AvatarUploader />
         </Form.Item>
         <Form.Item label="邮箱" field="email">
           <Input placeholder="请输入邮箱" />
