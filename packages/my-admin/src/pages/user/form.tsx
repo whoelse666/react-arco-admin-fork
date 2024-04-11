@@ -41,9 +41,8 @@ function UserForm({ visible, setVisible, editedItem, callback }: FormProps) {
     () => (editedItem._id ? '更新' : '新增') + name,
     [editedItem._id]
   );
-  console.log('editedItem', editedItem);
+
   const onSubmit = () => {
-    console.log('editedItem', editedItem);
     form.validate(async (errors) => {
       const operation = editedItem._id ? '编辑' : '新增';
       if (!errors) {
@@ -55,19 +54,20 @@ function UserForm({ visible, setVisible, editedItem, callback }: FormProps) {
             callback && callback(form.getFieldsValue());
             Message.success(operation + '用户成功!');
             setVisible(false);
+            form.resetFields();
           } else {
             Message.error(operation + '用户失败，请重试!');
           }
         } else {
           // 设置一个默认密码
           const editedItem = form.getFieldsValue();
-          console.log('editedItem', editedItem);
           editedItem.password = '123456';
           const { ok, data } = await addTableData(editedItem);
           if (ok) {
             callback && callback(data);
             Message.success(operation + '用户成功!');
             setVisible(false);
+            form.resetFields();
           } else {
             Message.error(operation + '用户失败，请重试!');
           }

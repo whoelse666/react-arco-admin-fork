@@ -18,6 +18,7 @@ export default function () {
         fileList={file ? [file] : []}
         showUploadList={false}
         onChange={(_, currentFile) => {
+          console.log('currentFile', currentFile);
           setFile({
             ...currentFile,
             url: URL.createObjectURL(currentFile.originFile),
