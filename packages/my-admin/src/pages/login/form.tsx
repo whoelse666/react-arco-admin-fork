@@ -14,8 +14,6 @@ import useStorage from '@/utils/useStorage';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import http from '@/utils/http';
-import { OpResult } from '@/types';
 
 export default function LoginForm() {
   const formRef = useRef<FormInstance>();
@@ -28,7 +26,7 @@ export default function LoginForm() {
 
   const [rememberPassword, setRememberPassword] = useState(!!loginParams);
 
-  function afterLoginSuccess(params, token) {
+  function afterLoginSuccess(params) {
     // 记住密码
     if (rememberPassword) {
       setLoginParams(JSON.stringify(params));
@@ -37,8 +35,6 @@ export default function LoginForm() {
     }
     // 记录登录状态
     localStorage.setItem('userStatus', 'login');
-    // 存储令牌
-    localStorage.setItem('token', token);
     // 跳转首页
     window.location.href = '/';
   }
@@ -46,27 +42,14 @@ export default function LoginForm() {
   function login(params) {
     setErrorMessage('');
     setLoading(true);
-    // axios
-    //   .post('/api/user/login', params)
-    //   .then((res) => {
-    //     const { status, msg } = res.data;
-    //     if (status === 'ok') {
-    //       afterLoginSuccess(params);
-    //     } else {
-    //       setErrorMessage(msg || t['login.form.login.errMsg']);
-    //     }
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
-    http
-      .post<OpResult<{ token: string }>>('/api/auth/login', params)
+    axios
+      .post('/api/user/login', params)
       .then((res) => {
-        const { token } = res.data;
-        if (token) {
-          afterLoginSuccess(params, token);
+        const { status, msg } = res.data;
+        if (status === 'ok') {
+          afterLoginSuccess(params);
         } else {
-          setErrorMessage(t['login.form.login.errMsg']);
+          setErrorMessage(msg || t['login.form.login.errMsg']);
         }
       })
       .finally(() => {
@@ -101,10 +84,10 @@ export default function LoginForm() {
         className={styles['login-form']}
         layout="vertical"
         ref={formRef}
-        initialValues={{ userName: '18888888888', password: '888888' }}
+        initialValues={{ userName: 'admin', password: 'admin' }}
       >
         <Form.Item
-          field="phoneNumber"
+          field="userName"
           rules={[{ required: true, message: t['login.form.userName.errMsg'] }]}
         >
           <Input

@@ -16,16 +16,13 @@ import checkLogin from './utils/checkLogin';
 import changeTheme from './utils/changeTheme';
 import useStorage from './utils/useStorage';
 import './mock';
-import { getUserInfo } from './pages/login/api/user';
 
 const store = createStore(rootReducer);
 
 function Index() {
-  // 获取本地存储设置
   const [lang, setLang] = useStorage('arco-lang', 'en-US');
   const [theme, setTheme] = useStorage('arco-theme', 'light');
 
-  // 组件库语言包
   function getArcoLocale() {
     switch (lang) {
       case 'zh-CN':
@@ -42,11 +39,10 @@ function Index() {
       type: 'update-userInfo',
       payload: { userLoading: true },
     });
-    getUserInfo().then((userInfo) => {
-      // 存入redux
+    axios.get('/api/user/userInfo').then((res) => {
       store.dispatch({
         type: 'update-userInfo',
-        payload: { userInfo, userLoading: false },
+        payload: { userInfo: res.data, userLoading: false },
       });
     });
   }
@@ -63,7 +59,6 @@ function Index() {
     changeTheme(theme);
   }, [theme]);
 
-  // 语言和风格初始值
   const contextValue = {
     lang,
     setLang,

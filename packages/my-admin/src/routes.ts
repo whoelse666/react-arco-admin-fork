@@ -13,35 +13,18 @@ export type IRoute = AuthParams & {
 
 export const routes: IRoute[] = [
   {
-    name: 'menu.dashboard', // locale包中的key
-    key: 'dashboard', // 唯一区分菜单项，也是路由path，决定icon
+    name: 'menu.dashboard',
+    key: 'dashboard',
     children: [
       {
         name: 'menu.dashboard.workplace',
         key: 'dashboard/workplace',
       },
     ],
-    // breadcrumb: true,// 是否显示在面包屑中
-    // ignore: true,// 是否渲染为菜单项
   },
   {
     name: 'Example',
     key: 'example',
-  },
-  {
-    name: 'menu.user',
-    key: 'user',
-    requiredPermissions: [{ resource: 'user', actions: ['read', 'write'] }],
-  },
-  {
-    name: 'menu.role',
-    key: 'role',
-    requiredPermissions: [{ resource: 'role', actions: ['read', 'write'] }],
-  },
-  {
-    name: 'menu.content',
-    key: 'content',
-    requiredPermissions: [{ resource: 'content' }],
   },
 ];
 
@@ -56,31 +39,26 @@ export const getName = (path: string, routes) => {
   });
 };
 
-// export const generatePermission = (role: string) => {
-//   // const actions = role === 'admin' ? ['*'] : ['read'];
-//   const result = {};
-//   routes.forEach((item) => {
-//     if (item.children) {
-//       item.children.forEach((child) => {
-//         result[child.name] = actions;
-//       });
-//     }
-//   });
-//   return result;
-// };
+export const generatePermission = (role: string) => {
+  const actions = role === 'admin' ? ['*'] : ['read'];
+  const result = {};
+  routes.forEach((item) => {
+    if (item.children) {
+      item.children.forEach((child) => {
+        result[child.name] = actions;
+      });
+    }
+  });
+  return result;
+};
 
-// 生成路由
 const useRoute = (userPermission): [IRoute[], string] => {
-  console.log(userPermission);
-  
   const filterRoute = (routes: IRoute[], arr = []): IRoute[] => {
     if (!routes.length) {
       return [];
     }
     for (const route of routes) {
       const { requiredPermissions, oneOfPerm } = route;
-      console.log('requiredPermissions', requiredPermissions);
-      
       let visible = true;
       if (requiredPermissions) {
         visible = auth({ requiredPermissions, oneOfPerm }, userPermission);
